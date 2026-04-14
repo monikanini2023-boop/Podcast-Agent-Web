@@ -96,23 +96,24 @@ if st.session_state.generated_script:
 
 st.divider()
 
-col_t1, col_t2 = st.columns([1, 1])
+st.markdown("##### 👥 团队成员")
+st.markdown("**夏文彦 &nbsp;|&nbsp; 覃君洋 &nbsp;|&nbsp; 王佳鸣 &nbsp;|&nbsp; 张慧敏 &nbsp;|&nbsp; 钱妤雯**")
+st.markdown('<h2>💰✨ <span style="background: linear-gradient(90deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">请为我们爆金币呀！！！</span> 🎉🥳</h2>', unsafe_allow_html=True)
 
-with col_t1:
-    st.markdown("##### 👥 团队成员")
-    st.markdown("**夏文彦 &nbsp;|&nbsp; 覃君洋 &nbsp;|&nbsp; 王佳鸣 &nbsp;|&nbsp; 张慧敏 &nbsp;|&nbsp; 钱妤雯**")
-    st.markdown('<h2>💰✨ <span style="background: linear-gradient(90deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">请为我们爆金币呀！！！</span> 🎉🥳</h2>', unsafe_allow_html=True)
+st.divider()
 
-with col_t2:
-    quotes = [
-        "“人工智能不是要取代人类，而是要让人类变得更加具有创造力。” —— **李飞飞 (斯坦福跨学科人工智能研究所所长)**",
-        "“在不久的将来，熟练地与AI对话并编程提示词，将成为一种全新的通用语言。” —— **萨姆·奥特曼 (OpenAI 创始人)**",
-        "“未来的文盲不再是那些不识字的人，而是那些不知道如何与人工智能协作的人。” —— **吴恩达 (Coursera 创始人, AI先驱)**",
-        "“我们将像看待电一样看待人工智能：起初你惊叹它，后来你发现它已无声无息地隐入日常。” —— **桑达尔·皮查伊 (Google CEO)**",
-        "“机器没有欲望，只有目的；人的伟大之处不仅在于思考，更在于拥有不可计算的‘热爱’。” —— **艾伦·图灵 (计算机科学之父)**",
-        "“别问智能机器能不能替你思考，问问它能如何帮你拓展思维的边界。” —— **大卫·银 (DeepMind 核心科学家)**"
-    ]
-    st.write("") # Spacer
-    if st.button("🎁 投票后，领取你的AI彩蛋～", type="secondary"):
+quotes = [
+    "“人工智能不是要取代人类，而是要让人类变得更加具有创造力。” —— **李飞飞 (斯坦福跨学科人工智能研究所所长)**",
+    "“在不久的将来，熟练地与AI对话并编程提示词，将成为一种全新的通用语言。” —— **萨姆·奥特曼 (OpenAI 创始人)**",
+    "“未来的文盲不再是那些不识字的人，而是那些不知道如何与人工智能协作的人。” —— **吴恩达 (Coursera 创始人, AI先驱)**",
+    "“我们将像看待电一样看待人工智能：起初你惊叹它，后来你发现它已无声无息地隐入日常。” —— **桑达尔·皮查伊 (Google CEO)**",
+    "“机器没有欲望，只有目的；人的伟大之处不仅在于思考，更在于拥有不可计算的‘热爱’。” —— **艾伦·图灵 (计算机科学之父)**",
+    "“别问智能机器能不能替你思考，问问它能如何帮你拓展思维的边界。” —— **大卫·银 (DeepMind 核心科学家)**"
+]
+
+st.write("") # Spacer
+col_cb1, col_cb2, col_cb3 = st.columns([1, 2, 1])
+with col_cb2:
+    if st.button("🎁 投票后，领取你的AI彩蛋～", type="secondary", use_container_width=True):
         st.balloons()
         st.success(random.choice(quotes), icon="🌟")
