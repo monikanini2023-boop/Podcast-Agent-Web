@@ -100,7 +100,7 @@ col_t1, col_t2 = st.columns([1, 1])
 
 with col_t1:
     st.markdown("##### 👥 团队成员")
-    st.markdown("**夏文彦 &nbsp;|&nbsp; 覃君洋 &nbsp;|&nbsp; 王佳鸣 &nbsp;|&nbsp; 张慧敏**")
+    st.markdown("**夏文彦 &nbsp;|&nbsp; 覃君洋 &nbsp;|&nbsp; 王佳鸣 &nbsp;|&nbsp; 张慧敏 &nbsp;|&nbsp; 钱妤雯**")
     st.markdown('<h2>💰✨ <span style="background: linear-gradient(90deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">请为我们爆金币呀！！！</span> 🎉🥳</h2>', unsafe_allow_html=True)
 
 with col_t2:
