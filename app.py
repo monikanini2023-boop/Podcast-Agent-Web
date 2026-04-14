@@ -26,7 +26,9 @@ with col2:
         st.image("opus_refining_demo.webp", use_container_width=True)
 with col3:
     st.warning("#### 3. cursor知识库复利")
-    if os.path.exists("knowledge_base_demo.webp"):
+    if os.path.exists("bitter_lesson_demo.webp"):
+        st.image("bitter_lesson_demo.webp", use_container_width=True)
+    elif os.path.exists("knowledge_base_demo.webp"):
         st.image("knowledge_base_demo.webp", use_container_width=True)
 with col4:
     st.error("#### 4. 音剪自动化制作")
