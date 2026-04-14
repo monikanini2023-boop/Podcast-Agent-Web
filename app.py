@@ -26,7 +26,10 @@ with col2:
         st.image("opus_refining_demo.webp", use_container_width=True)
 with col3:
     st.warning("#### 3. cursor知识库复利")
-    if os.path.exists("bitter_lesson_demo.webp"):
+    st.caption("*学习AI大神卡帕西的obsidian知识库管理法")
+    if os.path.exists("kb_sliding_demo.mp4"):
+        st.video("kb_sliding_demo.mp4", autoplay=True, muted=True, loop=True)
+    elif os.path.exists("bitter_lesson_demo.webp"):
         st.image("bitter_lesson_demo.webp", use_container_width=True)
     elif os.path.exists("knowledge_base_demo.webp"):
         st.image("knowledge_base_demo.webp", use_container_width=True)
