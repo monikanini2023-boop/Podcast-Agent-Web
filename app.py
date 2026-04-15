@@ -2,6 +2,11 @@ import streamlit as st
 import time
 import os
 import random
+import base64
+import streamlit.components.v1 as components
+
+AUDIO_PATH = "OpenAI试听.mp3"
+COVER_PATH = "cover.jpeg"
 
 st.set_page_config(page_title="热点播客 AI 自动化引擎", layout="wide", page_icon="🎙️")
 
@@ -67,6 +72,76 @@ def mock_generate_script():
     except Exception as e:
         return f"处理出错，无法生成文稿：{e}"
 
+def build_audio_player_html(audio_path, cover_path):
+    with open(audio_path, "rb") as f:
+        audio_b64 = base64.b64encode(f.read()).decode()
+    with open(cover_path, "rb") as f:
+        cover_b64 = base64.b64encode(f.read()).decode()
+    return f"""
+    <style>
+      body {{ margin: 0; }}
+      .player-wrap {{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 28px 20px 22px;
+        background: linear-gradient(145deg, #1a1a2e 0%, #16213e 55%, #0f3460 100%);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      }}
+      .disc {{
+        width: 190px;
+        height: 190px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid rgba(255,255,255,0.18);
+        box-shadow: 0 0 0 10px rgba(255,255,255,0.04),
+                    0 0 40px rgba(229,46,113,0.35);
+        margin-bottom: 18px;
+        transition: box-shadow 0.5s ease;
+        flex-shrink: 0;
+      }}
+      .disc.spinning {{
+        animation: spin 10s linear infinite;
+        box-shadow: 0 0 0 10px rgba(255,255,255,0.04),
+                    0 0 60px rgba(229,46,113,0.65),
+                    0 0 110px rgba(255,138,0,0.25);
+      }}
+      @keyframes spin {{
+        from {{ transform: rotate(0deg); }}
+        to   {{ transform: rotate(360deg); }}
+      }}
+      .disc img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
+      .track-title {{
+        font-size: 14px; font-weight: 700; color: #fff;
+        text-align: center; margin-bottom: 4px; letter-spacing: .3px;
+      }}
+      .track-sub {{
+        font-size: 11px; color: rgba(255,255,255,0.45);
+        text-align: center; margin-bottom: 16px;
+      }}
+      audio {{ width: 100%; border-radius: 8px; outline: none; }}
+    </style>
+    <div class="player-wrap">
+      <div class="disc" id="disc">
+        <img src="data:image/jpeg;base64,{cover_b64}" alt="封面" />
+      </div>
+      <div class="track-title">Anthropic 首季收入反超 OpenAI</div>
+      <div class="track-sub">热点播客 · 每早 7 点 · AI 深度解析</div>
+      <audio id="ap" controls>
+        <source src="data:audio/mpeg;base64,{audio_b64}" type="audio/mpeg">
+      </audio>
+    </div>
+    <script>
+      var ap   = document.getElementById('ap');
+      var disc = document.getElementById('disc');
+      ap.addEventListener('play',  function(){{ disc.classList.add('spinning'); }});
+      ap.addEventListener('pause', function(){{ disc.classList.remove('spinning'); }});
+      ap.addEventListener('ended', function(){{ disc.classList.remove('spinning'); }});
+    </script>
+    """
+
 st.write("")
 if "generated_script" not in st.session_state:
     st.session_state.generated_script = None
@@ -84,26 +159,36 @@ if st.button("👇 自动生成文稿 🪄", type="primary", use_container_width
 if st.session_state.generated_script:
     lines = st.session_state.generated_script.split('\n')
     preview_text = '\n'.join(lines[:10])
-    
-    st.info("**👀 【正文自动预览】（前 10 行）**")
-    st.markdown(preview_text)
-    st.markdown("<span style='color:gray;'>...（此处省略其余部分）...</span>", unsafe_allow_html=True)
-    
-    if st.session_state.show_full_script:
-        st.divider()
-        st.markdown("### 📄 完整播客终稿全文")
-        st.markdown(st.session_state.generated_script)
-        
-        with st.sidebar:
-            st.markdown("### 📖 沉浸阅读模式")
-            st.success("您正在阅读完整播客终稿。")
-            if st.button("🔼 阅毕，收起文稿", use_container_width=True, type="primary"):
-                st.session_state.show_full_script = False
+
+    col_left, col_right = st.columns([3, 2])
+
+    with col_left:
+        st.info("**👀 【正文自动预览】（前 10 行）**")
+        st.markdown(preview_text)
+        st.markdown("<span style='color:gray;'>...（此处省略其余部分）...</span>", unsafe_allow_html=True)
+
+        if st.session_state.show_full_script:
+            st.divider()
+            st.markdown("### 📄 完整播客终稿全文")
+            st.markdown(st.session_state.generated_script)
+
+            with st.sidebar:
+                st.markdown("### 📖 沉浸阅读模式")
+                st.success("您正在阅读完整播客终稿。")
+                if st.button("🔼 阅毕，收起文稿", use_container_width=True, type="primary"):
+                    st.session_state.show_full_script = False
+                    st.rerun()
+        else:
+            if st.button("🔽 展开阅读完整全文"):
+                st.session_state.show_full_script = True
                 st.rerun()
-    else:
-        if st.button("🔽 展开阅读完整全文"):
-            st.session_state.show_full_script = True
-            st.rerun()
+
+    with col_right:
+        if os.path.exists(AUDIO_PATH) and os.path.exists(COVER_PATH):
+            player_html = build_audio_player_html(AUDIO_PATH, COVER_PATH)
+            components.html(player_html, height=400)
+        else:
+            st.warning("音频或封面文件未找到，请检查路径。")
 
 st.divider()
 
