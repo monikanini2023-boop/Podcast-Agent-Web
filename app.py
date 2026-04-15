@@ -204,7 +204,11 @@ quotes = [
     "“未来的文盲不再是那些不识字的人，而是那些不知道如何与人工智能协作的人。” —— **吴恩达 (Coursera 创始人, AI先驱)**",
     "“我们将像看待电一样看待人工智能：起初你惊叹它，后来你发现它已无声无息地隐入日常。” —— **桑达尔·皮查伊 (Google CEO)**",
     "“机器没有欲望，只有目的；人的伟大之处不仅在于思考，更在于拥有不可计算的‘热爱’。” —— **艾伦·图灵 (计算机科学之父)**",
-    "“别问智能机器能不能替你思考，问问它能如何帮你拓展思维的边界。” —— **大卫·银 (DeepMind 核心科学家)**"
+    “”别问智能机器能不能替你思考，问问它能如何帮你拓展思维的边界。” —— **大卫·银 (DeepMind 核心科学家)**”,
+    “”AI时代的学习方式是先干起来，在干中学，我不懂没关系，我先上来，用AI尝试帮我解一解。” —— **老余**”,
+    “”你必须体验从免费到20美金、到两百美金的全过程，不带token的训练，AI人才是长不出来的。（祝你成为token富人）” —— **老余**”,
+    “”我突然意识到，这些模型可能很快就会比人类更聪明。这既令人振奋，也让人警醒——但无论如何，它都是人类历史上最重要的时刻。” —— **杰弗里·辛顿 (AI教父, 2024年诺贝尔物理学奖得主)**”,
+    “”每一个行业都将被AI重新定义。这不是一场技术升级，而是一场新的工业革命——而这次，软件会自己写软件。” —— **黄仁勋 (英伟达 CEO)**”
 ]
 
 st.write("") # Spacer
@@ -213,3 +217,36 @@ with col_cb2:
     if st.button("🎁 投票后，领取你的AI彩蛋～", type="secondary", use_container_width=True):
         st.balloons()
         st.success(random.choice(quotes), icon="🌟")
+        components.html("""
+        <script>
+        (function() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const now = ctx.currentTime;
+                // 小气泡 pop
+                const pop = ctx.createOscillator();
+                const popG = ctx.createGain();
+                pop.connect(popG); popG.connect(ctx.destination);
+                pop.frequency.setValueAtTime(900, now);
+                pop.frequency.exponentialRampToValueAtTime(350, now + 0.12);
+                pop.type = 'sine';
+                popG.gain.setValueAtTime(0.35, now);
+                popG.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+                pop.start(now); pop.stop(now + 0.15);
+                // 上升星星音阶
+                [523, 659, 784, 1047, 1319].forEach(function(hz, i) {
+                    const o = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    o.connect(g); g.connect(ctx.destination);
+                    o.frequency.value = hz;
+                    o.type = 'sine';
+                    const t = now + 0.08 + i * 0.09;
+                    g.gain.setValueAtTime(0, t);
+                    g.gain.linearRampToValueAtTime(0.18, t + 0.04);
+                    g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+                    o.start(t); o.stop(t + 0.31);
+                });
+            } catch(e) {}
+        })();
+        </script>
+        """, height=0)
